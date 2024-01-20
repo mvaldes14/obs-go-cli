@@ -7,7 +7,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func ChangeScene(sceneName string) {
+var sceneList = []string{"Starting", "Secrets", "Coding", "Ending"}
+
+func changeScene(sceneName string) {
 	var err error
 
 	client, err := goobs.New("localhost:4455")
@@ -25,16 +27,34 @@ func ChangeScene(sceneName string) {
 	}
 }
 
-var scenesCmd = &cobra.Command{
+func isStringNotInArray(target string, array []string) bool {
+	for _, element := range array {
+		if element == target {
+			return false
+		}
+	}
+	return true
+}
+
+var ScenesCmd = &cobra.Command{
 	Use:   "scenes",
 	Short: "Set the current scene",
 	Long:  `Set the current scene`,
 	Run: func(cmd *cobra.Command, args []string) {
-		ChangeScene(args[0])
-		fmt.Println("Scene changed to " + args[0])
+		if len(args) < 1 {
+			fmt.Println("Please provide a scene name")
+			return
+		}
+		if isStringNotInArray(args[0], sceneList) {
+			fmt.Println("Please provide a valid scene name")
+			return
+		} else {
+			changeScene(args[0])
+			fmt.Println("Scene changed to " + args[0])
+		}
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(scenesCmd)
+	rootCmd.AddCommand(ScenesCmd)
 }

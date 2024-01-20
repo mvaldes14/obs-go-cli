@@ -5,7 +5,6 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-  _ "github.com/mvaldes14/obs-go-cli/cmd/scenes"
 )
 
 var rootCmd = &cobra.Command{
